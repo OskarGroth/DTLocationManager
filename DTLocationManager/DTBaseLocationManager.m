@@ -61,7 +61,7 @@
 {
 #if TARGET_OS_IPHONE
     return ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways ||
-            [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse);  
+            [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse);
 #elif TARGET_OS_MAC
     return ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized);
 #endif
@@ -173,7 +173,7 @@
 {
     if ([self.delegate respondsToSelector:_cmd])
     {
-        [self.delegate locationManager:manager didUpdateHeading:newHeading];
+        //[self.delegate locationManager:manager didUpdateHeading:newHeading];
     }
 }
 
@@ -181,7 +181,8 @@
 {
     if ([self.delegate respondsToSelector:_cmd])
     {
-        return [self.delegate locationManagerShouldDisplayHeadingCalibration:manager];
+        // return [self.delegate locationManagerShouldDisplayHeadingCalibration:manager];
+        return NO;
     }
     return NO;
 }
@@ -218,6 +219,17 @@
     }
 }
 
+
+- (void)locationManager:(CLLocationManager *)manager didFinishDeferredUpdatesWithError:(NSError *)error
+{
+    if ([self.delegate respondsToSelector:_cmd])
+    {
+        [self.delegate locationManager:manager didFinishDeferredUpdatesWithError:error];
+    }
+}
+
+#if TARGET_OS_IPHONE
+
 - (void)locationManagerDidPauseLocationUpdates:(CLLocationManager *)manager
 {
     if ([self.delegate respondsToSelector:_cmd])
@@ -233,16 +245,6 @@
         [self.delegate locationManagerDidResumeLocationUpdates:manager];
     }
 }
-
-- (void)locationManager:(CLLocationManager *)manager didFinishDeferredUpdatesWithError:(NSError *)error
-{
-    if ([self.delegate respondsToSelector:_cmd])
-    {
-        [self.delegate locationManager:manager didFinishDeferredUpdatesWithError:error];
-    }
-}
-
-#if TARGET_OS_IPHONE
 
 // These methods are only available for iOS
 
